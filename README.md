@@ -34,16 +34,16 @@ yarn start
 ### Endpoints
 
 **Create a One-Time Link**
-URL: `/link/create`
-Method: POST
-Content-Type: application/json
-Body:
+- URL: `/link/create`
+- Method: POST
+- Content-Type: application/json
+- Body:
 ```json
 {
   "value": "Your string value"
 }
 ```
-Response:
+- Response:
 ```json
 {
   "link": "http://localhost:3000/link/xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
@@ -57,9 +57,9 @@ curl -X POST http://localhost:3000/link/create -H "Content-Type: application/jso
 
 
 **Retrieve the Value from a One-Time Link**
-URL: `/link/:id`
-Method: GET
-Response:
+- URL: `/link/:id`
+- Method: GET
+- Response:
 ```json
 {
   "value": "Hello, World!"
