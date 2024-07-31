@@ -1,30 +1,28 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { LinkService } from './link.service';
 import { ConfigService } from '@nestjs/config';
+import { CreateLinkDto } from './dto/create-link.dto';
+import { LinkResponseDto } from './dto/link-response.dto';
+import { ValueResponseDto } from './dto/value-response.dto';
 
 @Controller('link')
 export class LinkController {
-  private readonly linkBaseUrl: string;
-
-  constructor(
-    private readonly linkService: LinkService,
-    private readonly configService: ConfigService,
-  ) {
-    this.linkBaseUrl = configService.getOrThrow<string>('LINK_BASE_URL');
-  }
+  constructor(private readonly linkService: LinkService) {}
 
   @Post('create')
-  create(@Body('value') value: string) {
-    if (!value) {
-      return { error: 'Value is required' };
-    }
-    const id = this.linkService.create(value);
-    return { link: `${this.linkBaseUrl}/${id}` };
+  create(@Body() createLinkDto: CreateLinkDto): Promise<LinkResponseDto> {
+    return this.linkService.create(createLinkDto);
   }
 
   @Get(':id')
-  get(@Param('id') id: string) {
-    const value = this.linkService.get(id);
-    return { value };
+  get(@Param('id', new ParseUUIDPipe()) id: string): Promise<ValueResponseDto> {
+    return this.linkService.get(id);
   }
 }
